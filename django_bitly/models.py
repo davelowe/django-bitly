@@ -41,9 +41,8 @@ class BittleManager(models.Manager):
     Bit.ly links to local objects.
     """
     def filter_for_instance(self, obj):
-        app_label = obj._meta.app_label
-        model = obj._meta.module_name
-        return self.filter(content_type__app_label=app_label, content_type__model=model, object_id=obj.pk)
+        content_type = ContentType.objects.get_for_model(obj)
+        return self.filter(content_type=content_type, object_id=obj.pk)
 
     def get_for_instance(self, obj):
         try:
